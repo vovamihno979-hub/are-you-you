@@ -31,13 +31,18 @@ class Player(GameSprite):
             self.rect.y -= self.speed
 
 window = display.set_mode((700,500))
+win_height = 500
 display.set_caption('Run')
+speed_x = 3
+speed_y = 3
 background = transform.scale(image.load('i.webp'), (700,500))
-Player1 = Player('хук дк-no-bg-preview (carve.photos).png',300,500,600,100,1)
-Player2 = Player('хук дк-no-bg-preview (carve.photos).png',300,500,0,100,1)
+Player1 = Player('хук дк-no-bg-preview (carve.photos).png',300,500,600,100,5)
+Player2 = Player('хук дк-no-bg-preview (carve.photos).png',300,500,0,100,5)
 Player3 = GameSprite('падж.png',200,200,350,225,2)
 finish = False
 game = True
+clock = time.Clock()
+FPS=60
 while game:
     window.blit(background,(0,0))
 
@@ -46,10 +51,20 @@ while game:
             game = False
     if not finish:
         Player1.update_l()
-        Player1.reset()
         Player2.update_r()
+        Player3.rect.x += speed_x
+        Player3.rect.y += speed_y
+        if Player3.rect.y > win_height - 50 or Player3.rect.y < 0:
+            speed_y *= -1
+        if sprite.collide_rect(Player1,Player3) or sprite.collide_rect(Player2,Player3):
+            speed_x *= -1
+
+        Player1.reset()
         Player2.reset()
         Player3.reset()
 
 
+
+
     display.update()
+    clock.tick(FPS)
