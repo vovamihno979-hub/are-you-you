@@ -35,6 +35,10 @@ win_height = 500
 display.set_caption('Run')
 speed_x = 3
 speed_y = 3
+font.init()
+font1 = font.Font(None, 35)
+lose1 = font1.render('LOSE PLAYER 1',True, (180,0,0))
+lose2 = font1.render('LOSE PLAYER2',True,(180,0,0))
 background = transform.scale(image.load('i.webp'), (700,500))
 Player1 = Player('хук дк-no-bg-preview (carve.photos).png',300,500,600,100,5)
 Player2 = Player('хук дк-no-bg-preview (carve.photos).png',300,500,0,100,5)
@@ -42,7 +46,7 @@ Player3 = GameSprite('падж.png',200,200,350,225,2)
 finish = False
 game = True
 clock = time.Clock()
-FPS=60
+FPS = 60
 while game:
     window.blit(background,(0,0))
 
@@ -56,15 +60,19 @@ while game:
         Player3.rect.y += speed_y
         if Player3.rect.y > win_height - 50 or Player3.rect.y < 0:
             speed_y *= -1
-        if sprite.collide_rect(Player1,Player3) or sprite.collide_rect(Player2,Player3):
+        if sprite.collide_rect(Player1, Player3) or sprite.collide_rect(Player2,Player3):
             speed_x *= -1
 
         Player1.reset()
         Player2.reset()
         Player3.reset()
 
-
-
+    if Player3.rect.x < 0:
+        finish = True
+        window.blit(lose1, (225, 200))
+    if Player3.rect.x > 700:
+        finish = True
+        window.blit(lose2, (225, 200))
 
     display.update()
     clock.tick(FPS)
